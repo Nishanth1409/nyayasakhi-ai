@@ -150,6 +150,49 @@ http://localhost:5173
 
 ---
 
+## 🌐 Deploy to Vercel (same behavior as local)
+
+The frontend on Vercel talks to your **Supabase Edge Function** (not Vercel serverless). For every feature to work like `npm run dev`:
+
+### 1. Vercel environment variables (required)
+
+In **Vercel → Project → Settings → Environment Variables**, add for **Production** and **Preview**:
+
+| Variable | Value |
+|----------|--------|
+| `VITE_SUPABASE_URL` | `https://luuvuswwfmhtwhursrfx.supabase.co` (your project URL) |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase **anon** public key |
+
+Then **Redeploy**. Vite bakes these in at **build** time — changing them later requires a new deploy.
+
+### 2. Supabase Edge Function (required for AI chat & document explain)
+
+```bash
+npx supabase login
+npx supabase link --project-ref luuvuswwfmhtwhursrfx
+npx supabase secrets set LOVABLE_API_KEY=your_lovable_api_key
+npx supabase functions deploy nyaya-chat
+```
+
+`LOVABLE_API_KEY` must match what you use locally (Lovable workspace / AI gateway).
+
+### 3. What works without extra setup
+
+| Feature | Needs |
+|---------|--------|
+| Home, language picker, legal checklist, help directory | Frontend only ✓ |
+| Voice input / text-to-speech | HTTPS + Chrome (works on Vercel) ✓ |
+| AI chat, document upload + AI explain | Steps 1 + 2 above |
+
+### 4. Verify after deploy
+
+1. Open your Vercel URL — no red config banner at the top.
+2. **Talk to NyayaSakhi** — send a message; reply should stream.
+3. **Upload a document** — PDF or image; explanation should stream.
+4. If chat fails: check browser Network tab for `nyaya-chat` (401 → keys; 500 → `LOVABLE_API_KEY` or function not deployed).
+
+---
+
 ## 🔮 Future Improvements
 
 * 🧠 Chat memory (persistent conversations)

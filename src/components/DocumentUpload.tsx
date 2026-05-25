@@ -3,20 +3,24 @@ import { Upload, FileText, Loader2, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LangCode, getLang, t } from "@/lib/languages";
 import { speak, stopSpeaking } from "@/hooks/useVoice";
+import { NyayaChatError, streamNyayaChat } from "@/lib/nyayaChat";
 import { toast } from "sonner";
 
 interface Props { lang: LangCode; }
-
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/nyaya-chat`;
 const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
 const MAX_CHARS = 8000;
 
 async function extractFromPdf(file: File): Promise<string> {
-  // @ts-ignore - pdfjs-dist legacy build
+  // @ts-ignore - pdfjs-dist ESM build
   const pdfjs: any = await import("pdfjs-dist/build/pdf.mjs");
-  // @ts-ignore
-  const worker = await import("pdfjs-dist/build/pdf.worker.mjs?url");
-  pdfjs.GlobalWorkerOptions.workerSrc = worker.default;
+  try {
+    // @ts-ignore — bundled worker URL (Vite / Vercel)
+    const worker = await import("pdfjs-dist/build/pdf.worker.mjs?url");
+    pdfjs.GlobalWorkerOptions.workerSrc = worker.default;
+  } catch {
+    // CDN fallback if worker chunk path fails in production
+    pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+  }
 
   const buf = await file.arrayBuffer();
   const pdf = await pdfjs.getDocument({ data: buf }).promise;
@@ -97,55 +101,17 @@ export const DocumentUpload = ({ lang }: Props) => {
     try {
       const userMsg = `IMPORTANT: You MUST reply ONLY in ${language.name} (${language.bcp47}), using the native script of ${language.name}. Do NOT use English or any other language.\n\nI am sharing a document. Please explain it to me in very simple ${language.name}, in 4-6 short sentences. Tell me: (1) what kind of document this is, (2) the most important points, (3) what I should do next. Avoid legal jargon. Remember: entire reply must be in ${language.name} only.\n\nDOCUMENT TEXT:\n"""${text}"""`;
 
-      const resp = await fetch(CHAT_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
-        body: JSON.stringify({
-          messages: [{ role: "user", content: userMsg }],
-          language: lang,
-        }),
-      });
-
-      if (!resp.ok) {
-        if (resp.status === 429) toast.error("Too many requests. Please wait.");
-        else if (resp.status === 402) toast.error("AI credits exhausted.");
-        else toast.error("AI service error.");
-        setStage("idle"); return;
-      }
-      if (!resp.body) throw new Error("no body");
-
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let acc = "";
-      let done = false;
-      while (!done) {
-        const { done: d, value } = await reader.read();
-        if (d) break;
-        buffer += decoder.decode(value, { stream: true });
-        let idx: number;
-        while ((idx = buffer.indexOf("\n")) !== -1) {
-          let line = buffer.slice(0, idx);
-          buffer = buffer.slice(idx + 1);
-          if (line.endsWith("\r")) line = line.slice(0, -1);
-          if (!line.startsWith("data: ")) continue;
-          const json = line.slice(6).trim();
-          if (json === "[DONE]") { done = true; break; }
-          try {
-            const c = JSON.parse(json).choices?.[0]?.delta?.content;
-            if (c) { acc += c; setExplanation(acc); }
-          } catch { /* keep buffering */ }
-        }
-      }
+      const acc = await streamNyayaChat(
+        [{ role: "user", content: userMsg }],
+        lang,
+        (chunk) => setExplanation((prev) => prev + chunk),
+      );
       setStage("done");
       if (voiceOn && acc) speak(acc, language.bcp47);
       else stopSpeaking();
     } catch (e) {
       console.error(e);
-      toast.error("Connection problem.");
+      toast.error(e instanceof NyayaChatError ? e.message : "Connection problem.");
       setStage("idle");
     }
   };

@@ -6,13 +6,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSpeechRecognition, speak, stopSpeaking } from "@/hooks/useVoice";
 import { LangCode, getLang, t } from "@/lib/languages";
 import { cn } from "@/lib/utils";
+import { NyayaChatError, streamNyayaChat } from "@/lib/nyayaChat";
 import { toast } from "sonner";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
 interface Props { lang: LangCode; }
-
-const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/nyaya-chat`;
 
 export const VoiceChat = ({ lang }: Props) => {
   const language = getLang(lang);
@@ -58,54 +57,11 @@ export const VoiceChat = ({ lang }: Props) => {
     };
 
     try {
-      const resp = await fetch(CHAT_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
-        },
-        body: JSON.stringify({
-          messages: next.map(m => ({ role: m.role, content: m.content })),
-          language: lang,
-        }),
-      });
-
-      if (!resp.ok) {
-        if (resp.status === 429) toast.error("Too many requests. Please wait a moment.");
-        else if (resp.status === 402) toast.error("AI credits exhausted.");
-        else toast.error("Could not reach NyayaSakshi. Please try again.");
-        setStreaming(false);
-        return;
-      }
-      if (!resp.body) throw new Error("no body");
-
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-      let done = false;
-      while (!done) {
-        const { done: d, value } = await reader.read();
-        if (d) break;
-        buffer += decoder.decode(value, { stream: true });
-        let idx: number;
-        while ((idx = buffer.indexOf("\n")) !== -1) {
-          let line = buffer.slice(0, idx);
-          buffer = buffer.slice(idx + 1);
-          if (line.endsWith("\r")) line = line.slice(0, -1);
-          if (line.startsWith(":") || line.trim() === "") continue;
-          if (!line.startsWith("data: ")) continue;
-          const json = line.slice(6).trim();
-          if (json === "[DONE]") { done = true; break; }
-          try {
-            const parsed = JSON.parse(json);
-            const c = parsed.choices?.[0]?.delta?.content;
-            if (c) upsert(c);
-          } catch {
-            buffer = line + "\n" + buffer;
-            break;
-          }
-        }
-      }
+      assistantSoFar = await streamNyayaChat(
+        next.map(m => ({ role: m.role, content: m.content })),
+        lang,
+        upsert,
+      );
 
       if (voiceEnabled && assistantSoFar) {
         setIsSpeaking(true);
@@ -116,7 +72,7 @@ export const VoiceChat = ({ lang }: Props) => {
       }
     } catch (e) {
       console.error(e);
-      toast.error("Connection problem.");
+      toast.error(e instanceof NyayaChatError ? e.message : "Connection problem.");
     } finally {
       setStreaming(false);
     }
