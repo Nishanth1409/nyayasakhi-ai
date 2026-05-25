@@ -1,9 +1,9 @@
 import { AlertTriangle } from "lucide-react";
-import { configError, isBackendConfigured } from "@/lib/config";
+import { configError } from "@/lib/config";
 
-/** Shown when VITE_* env vars were not set at build time (common Vercel misconfiguration). */
+/** Shown in local dev when .env is missing (production uses /api/nyaya-chat on Vercel). */
 export const ConfigBanner = () => {
-  if (isBackendConfigured) return null;
+  if (!configError) return null;
 
   return (
     <div
@@ -13,12 +13,8 @@ export const ConfigBanner = () => {
       <div className="container mx-auto flex items-start gap-2">
         <AlertTriangle className="h-5 w-5 shrink-0 mt-0.5" />
         <div>
-          <p className="font-semibold">AI features are not configured for this deployment</p>
-          <p className="mt-1 opacity-90">
-            {configError} In Vercel → Project → Settings → Environment Variables, add both variables for
-            Production and Preview, then redeploy. On Supabase, set secret <code className="text-xs">LOVABLE_API_KEY</code> and
-            deploy the <code className="text-xs">nyaya-chat</code> function.
-          </p>
+          <p className="font-semibold">AI features are not configured</p>
+          <p className="mt-1 opacity-90">{configError} Copy values from .env.example into a `.env` file, then restart `npm run dev`.</p>
         </div>
       </div>
     </div>

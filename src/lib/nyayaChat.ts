@@ -1,5 +1,5 @@
 import { LangCode } from "@/lib/languages";
-import { isBackendConfigured, nyayaChatUrl, supabaseAnonKey } from "@/lib/config";
+import { isBackendConfigured, nyayaChatUrl, supabaseAnonKey, usesVercelChatApi } from "@/lib/config";
 
 export type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -38,17 +38,19 @@ export async function streamNyayaChat(
 ): Promise<string> {
   if (!isBackendConfigured) {
     throw new NyayaChatError(
-      "Server not configured. Add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY in Vercel → Settings → Environment Variables, then redeploy.",
+      "Server not configured. For local dev, add VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY to .env.",
     );
+  }
+
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (!usesVercelChatApi && supabaseAnonKey) {
+    headers.Authorization = `Bearer ${supabaseAnonKey}`;
+    headers.apikey = supabaseAnonKey;
   }
 
   const resp = await fetch(nyayaChatUrl, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${supabaseAnonKey}`,
-      apikey: supabaseAnonKey,
-    },
+    headers,
     body: JSON.stringify({ messages, language }),
   });
 

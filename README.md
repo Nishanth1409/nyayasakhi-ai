@@ -150,46 +150,28 @@ http://localhost:5173
 
 ---
 
-## 🌐 Deploy to Vercel (same behavior as local)
+## 🌐 Deploy to Vercel (chat + document AI)
 
-The frontend on Vercel talks to your **Supabase Edge Function** (not Vercel serverless). For every feature to work like `npm run dev`:
+On Vercel, **chat and document analysis** use a built-in API route (`/api/nyaya-chat`). You only need one server secret:
 
-### 1. Vercel environment variables (required)
+### Required: `LOVABLE_API_KEY` on Vercel
 
-In **Vercel → Project → Settings → Environment Variables**, add for **Production** and **Preview**:
+1. **Vercel** → your project → **Settings** → **Environment Variables**
+2. Add **`LOVABLE_API_KEY`** = your Lovable / AI gateway API key (same key you use in Supabase for local dev)
+3. Enable for **Production** and **Preview**
+4. Click **Redeploy**
 
-| Variable | Value |
-|----------|--------|
-| `VITE_SUPABASE_URL` | `https://luuvuswwfmhtwhursrfx.supabase.co` (your project URL) |
-| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase **anon** public key |
+Without this variable, the build fails and chat/document AI will not work.
 
-Then **Redeploy**. Vite bakes these in at **build** time — changing them later requires a new deploy.
+### Local dev (unchanged)
 
-### 2. Supabase Edge Function (required for AI chat & document explain)
+Use `.env` with `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, and deploy `nyaya-chat` on Supabase with `LOVABLE_API_KEY` — or use `vercel dev` with `LOVABLE_API_KEY` in `.env`.
 
-```bash
-npx supabase login
-npx supabase link --project-ref luuvuswwfmhtwhursrfx
-npx supabase secrets set LOVABLE_API_KEY=your_lovable_api_key
-npx supabase functions deploy nyaya-chat
-```
+### Verify after deploy
 
-`LOVABLE_API_KEY` must match what you use locally (Lovable workspace / AI gateway).
-
-### 3. What works without extra setup
-
-| Feature | Needs |
-|---------|--------|
-| Home, language picker, legal checklist, help directory | Frontend only ✓ |
-| Voice input / text-to-speech | HTTPS + Chrome (works on Vercel) ✓ |
-| AI chat, document upload + AI explain | Steps 1 + 2 above |
-
-### 4. Verify after deploy
-
-1. Open your Vercel URL — no red config banner at the top.
-2. **Talk to NyayaSakhi** — send a message; reply should stream.
-3. **Upload a document** — PDF or image; explanation should stream.
-4. If chat fails: check browser Network tab for `nyaya-chat` (401 → keys; 500 → `LOVABLE_API_KEY` or function not deployed).
+1. **Talk to NyayaSakhi** — send a message; reply should stream.
+2. **Upload a document** — PDF or image; explanation should stream.
+3. If it fails: DevTools → **Network** → `nyaya-chat` → **500** usually means `LOVABLE_API_KEY` is missing or wrong on Vercel.
 
 ---
 
