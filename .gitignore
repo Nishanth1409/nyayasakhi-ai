@@ -28,3 +28,6 @@ dist-ssr
 
 # Local internship weekly documents (personal laptop only — do not commit or push)
 internship-weekly-docs/
+
+# Local mockup studio (used only to regenerate README device shots)
+docs/mockup/

@@ -1,196 +1,181 @@
-# ⚖️ NyayaSakhi AI
+<div align="center">
 
-### Multilingual AI Legal Assistant for Rural Women in India
+# NyayaSakhi AI — Voice Legal Guide
 
-NyayaSakhi AI is a **Generative AI-powered legal assistant** that provides **simple, multilingual legal guidance** to rural women in India, focusing on **inheritance and property rights**.
+**Your voice. Your rights. Your inheritance.**
 
----
+A gentle, voice-first legal guide for rural women in India — understand inheritance and property rights
+in your own language, upload documents for plain-language explanations, and find real nearby help.
 
-## 🚀 Features
+Live: **[nyayasakhi-ai.vercel.app](https://nyayasakhi-ai.vercel.app/)**
 
-* 🌐 **Multilingual Support**
-  Supports multiple Indian languages (Hindi, Tamil, Telugu, Marathi, etc.)
+[![React](https://img.shields.io/badge/React-18-149ECA?logo=react&logoColor=white)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Supabase](https://img.shields.io/badge/Supabase-Edge%20Functions-3ECF8E?logo=supabase&logoColor=white)](https://supabase.com)
+[![AI](https://img.shields.io/badge/AI-Gemini-4285F4?logo=google&logoColor=white)](https://ai.google.dev)
+![Languages](https://img.shields.io/badge/languages-12%20Indian-c45c7a)
 
-* 🤖 **AI-Powered Chatbot**
-  Uses Gemini 2.5 Flash (via API) to generate legal guidance
+</div>
 
-* 🧠 **Prompt Engineering**
-  Ensures:
-
-  * Simple explanations
-  * Cultural sensitivity
-  * Legal relevance
-
-* ⚡ **Real-Time Streaming Responses**
-  Chat responses are streamed live
-
-* 📄 **Document Upload & Explanation (NEW 🔥)**
-
-  * Upload legal documents (PDF/Text)
-  * AI extracts and explains them in simple language
-  * Helps users understand complex legal papers
-
-* 🔒 **Serverless Backend**
-  Built using Supabase Edge Functions (Deno)
+<div align="center">
+  <img src="docs/screenshots/devices-all.png" alt="NyayaSakhi AI on television, laptop, and phone" width="100%" />
+  <p><em>One app · three displays — television, laptop, and phone. Layout adapts to each screen.</em></p>
+</div>
 
 ---
 
-## 🧠 How It Works
+## Why this exists
 
-1. User enters a query OR uploads a document
-2. Request is sent to Supabase Edge Function
-3. System prompt guides AI behavior
-4. AI processes:
+Inheritance and property papers are written for lawyers — not for the women who need them most.
+**NyayaSakhi AI** is a voice-first companion: speak in your language, get simple answers about your share
+and daughters' rights, upload a notice or PDF to understand it, and dial real helplines nearby.
 
-   * Chat query OR
-   * Document text
-5. Response is streamed back to frontend
+> Built with care for the women of India. This is general guidance — not a substitute for a lawyer.
 
 ---
 
-## 📄 Document Upload Feature
+## What you can do
 
-### 💡 What it does
-
-* Upload a legal document (PDF or text)
-* Extracts content
-* Explains in **simple, user-friendly language**
-
-### 🧠 Example Use Case
-
-> A user uploads a property document →
-> AI explains ownership, rights, and important clauses in simple terms.
+- **Talk in 12 Indian languages** — Hindi, English, Kannada, Tamil, Telugu, Marathi, Bengali, Gujarati, Malayalam, Punjabi, Odia, Assamese — with voice in and voice out.
+- **Voice chatbot** — ask anything about inheritance rights; NyayaSakhi listens, answers, and reads back.
+- **Understand a document** — upload PDF / JPG / PNG (up to 10 MB); get a plain-language explanation.
+- **Find legal help nearby** — free legal aid, NGOs, and women's helplines by state (including 181).
+- **Simple legal guidance** — your share, daughters' rights, and the law — without jargon.
+- **Works on every screen** — phone, laptop, and television layouts.
 
 ---
 
-## 🏗️ Tech Stack
+## See it on every display
 
-### Frontend
+| Laptop · 1440 × 900 | Phone · 390 × 844 |
+| :---: | :---: |
+| <img src="docs/screenshots/device-laptop.png" alt="NyayaSakhi on a laptop" /> | <img src="docs/screenshots/device-phone.png" alt="NyayaSakhi on a phone" /> |
 
-* React + Vite
-* TypeScript
-* Tailwind CSS
+<div align="center">
 
-### Backend
+### Television · 1920 × 1080
 
-* Supabase Edge Functions (Deno)
+<img src="docs/screenshots/device-tv.png" alt="NyayaSakhi on a television" width="92%" />
 
-### AI Layer
-
-* Gemini 2.5 Flash (via Lovable AI Gateway)
-* Prompt Engineering
-* Streaming responses
+</div>
 
 ---
 
-## 📁 Project Structure
+## Every feature, one by one
 
-```
-nyayasakhi-ai/
-│
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── hooks/
-│   ├── integrations/
-│   ├── lib/
-│
-├── supabase/
-│   ├── functions/nyaya-chat/
-│
-├── public/
-├── .env
-```
+### 1 · Home — Hindi first
+
+Default landing in हिन्दी, with clear CTAs for chat, documents, and legal help.
+
+<img src="docs/screenshots/feature-hero-hi.png" alt="NyayaSakhi Hindi home" width="100%" />
+
+### 2 · Voice chatbot
+
+Press to speak or type. Ask about inheritance rights in your language.
+
+<img src="docs/screenshots/feature-voice-chat.png" alt="NyayaSakhi voice chatbot" width="100%" />
+
+### 3 · Understand a document
+
+Upload a letter, notice, or paper (PDF / photo). Get a simple explanation back.
+
+<img src="docs/screenshots/feature-documents.png" alt="Document upload and explain" width="100%" />
+
+### 4 · Nearby legal help
+
+State-wise directory of legal aid, NGOs, and helplines — with one-tap call links.
+
+<img src="docs/screenshots/feature-legal-help.png" alt="Nearby legal help directory" width="100%" />
+
+### 5 · 12 languages
+
+| Language picker | English | ಕನ್ನಡ |
+| :---: | :---: | :---: |
+| <img src="docs/screenshots/feature-languages.png" alt="12 Indian languages" /> | <img src="docs/screenshots/lang-english.png" alt="English landing" /> | <img src="docs/screenshots/lang-kannada.png" alt="Kannada landing" /> |
 
 ---
 
-## ⚙️ Setup & Installation
+## Tech stack
 
-### 1. Clone the repository
+| Layer | Technology |
+| --- | --- |
+| Frontend | React 18 · Vite 5 · TypeScript · Tailwind CSS · shadcn/ui |
+| Backend | Supabase Edge Functions (Deno) · Vercel `/api/nyaya-chat` |
+| AI | Gemini (via Lovable AI gateway) — streaming responses |
+| Docs | PDF.js · Tesseract.js (OCR for photos) |
+| Deploy | Vercel |
+
+---
+
+## Getting started (run it locally)
+
+**Prerequisites:** [Node.js 18+](https://nodejs.org).
 
 ```bash
-git clone https://github.com/your-username/nyayasakhi-ai.git
+# 1. Clone
+git clone https://github.com/Nishanth1409/nyayasakhi-ai.git
 cd nyayasakhi-ai
-```
 
-### 2. Install dependencies
-
-```bash
+# 2. Install
 npm install
-```
 
-### 3. Configure Environment Variables
+# 3. Configure env
+cp .env.example .env
+# Fill in:
+#   VITE_SUPABASE_URL=
+#   VITE_SUPABASE_PUBLISHABLE_KEY=
+#   VITE_SUPABASE_PROJECT_ID=
+# On Supabase / Vercel also set:
+#   LOVABLE_API_KEY=   (AI gateway for chat + documents)
 
-Create `.env`:
-
-```env
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_PUBLISHABLE_KEY=your_key
-```
-
-In Supabase:
-
-```
-LOVABLE_API_KEY=your_api_key
-```
-
----
-
-### 4. Run the project
-
-```bash
+# 4. Start
 npm run dev
 ```
 
-Open:
+Open **http://localhost:5173**.
+
+### Handy scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Vite dev server |
+| `npm run build` | Production build (checks Vercel env) |
+| `npm run preview` | Preview the production build |
+| `npm run test` | Run Vitest |
+
+---
+
+## Project structure
 
 ```
-http://localhost:5173
+nyayasakhi-ai/
+├─ src/
+│  ├─ components/       # Chat, documents, help, UI
+│  ├─ pages/            # Index + NotFound
+│  ├─ hooks/ · lib/     # Shared logic
+│  └─ integrations/     # Supabase client
+├─ api/                 # Vercel serverless chat route
+├─ supabase/functions/  # Edge function (nyaya-chat)
+├─ public/
+└─ docs/screenshots/    # README device + feature shots
 ```
 
 ---
 
-## 🌐 Deploy to Vercel (chat + document AI)
+## Live & credits
 
-On Vercel, **chat and document analysis** use a built-in API route (`/api/nyaya-chat`). You only need one server secret:
+- **Live app:** [nyayasakhi-ai.vercel.app](https://nyayasakhi-ai.vercel.app/)
+- **Author:** [Nishanth K R](https://github.com/Nishanth1409) · Portfolio [nkrportfolio.vercel.app](https://nkrportfolio.vercel.app)
 
-### Required: `LOVABLE_API_KEY` on Vercel
-
-1. **Vercel** → your project → **Settings** → **Environment Variables**
-2. Add **`LOVABLE_API_KEY`** = your Lovable / AI gateway API key (same key you use in Supabase for local dev)
-3. Enable for **Production** and **Preview**
-4. Click **Redeploy**
-
-Without this variable, the build fails and chat/document AI will not work.
-
-### Local dev (unchanged)
-
-Use `.env` with `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, and deploy `nyaya-chat` on Supabase with `LOVABLE_API_KEY` — or use `vercel dev` with `LOVABLE_API_KEY` in `.env`.
-
-### Verify after deploy
-
-1. **Talk to NyayaSakhi** — send a message; reply should stream.
-2. **Upload a document** — PDF or image; explanation should stream.
-3. If it fails: DevTools → **Network** → `nyaya-chat` → **500** usually means `LOVABLE_API_KEY` is missing or wrong on Vercel.
+> Disclaimer: NyayaSakhi provides general information only. It is not a lawyer and does not replace professional legal advice.
 
 ---
 
-## 🔮 Future Improvements
+<div align="center">
 
-* 🧠 Chat memory (persistent conversations)
-* 📚 RAG (document-based knowledge retrieval)
-* 🎤 Voice input/output
-* 📍 Location-based legal help
-* 📊 Admin analytics dashboard
+Made with care by **Nishanth K R** — *son of a farmer, always a farmer.*
 
----
+[Portfolio](https://nkrportfolio.vercel.app) · [GitHub](https://github.com/Nishanth1409)
 
-## ⚠️ Disclaimer
-
-This application provides **general legal guidance only** and is **not a substitute for professional legal advice**.
-
----
-
-## ❤️ Acknowledgment
-
-Built to empower women with accessible legal knowledge using AI.
+</div>
