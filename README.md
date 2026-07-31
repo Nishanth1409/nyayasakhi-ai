@@ -165,17 +165,19 @@ nyayasakhi-ai/
 
 ## Live & credits
 
-- **Live app:** [nyayasakhi-ai.vercel.app](https://nyayasakhi-ai.vercel.app/)
-- **Author:** [Nishanth K R](https://github.com/Nishanth1409) · Portfolio [nkrportfolio.vercel.app](https://nkrportfolio.vercel.app)
-
-> Disclaimer: NyayaSakhi provides general information only. It is not a lawyer and does not replace professional legal advice.
+| | |
+| :--- | :--- |
+| **Live** | [nyayasakhi-ai.vercel.app](https://nyayasakhi-ai.vercel.app/) |
+| **Author** | [Nishanth K R](https://github.com/Nishanth1409) |
+| **Portfolio** | [nkrportfolio.vercel.app](https://nkrportfolio.vercel.app) |
 
 ---
 
 <div align="center">
 
-Made with care by **Nishanth K R** — *son of a farmer, always a farmer.*
+*Son of a farmer · always a farmer.*
 
-[Portfolio](https://nkrportfolio.vercel.app) · [GitHub](https://github.com/Nishanth1409)
+[GitHub](https://github.com/Nishanth1409) · [Portfolio](https://nkrportfolio.vercel.app)
 
 </div>
+
